@@ -77,10 +77,7 @@ def displayButtons():
 	shuffleButton.setText('Shuffle Array')
 	shuffleButton.draw()
 
-	pygame.display.flip()
-
-
-def displayBars(arr):
+def displayBars(arr, delay):
 
 	barWidth = 20
 	pos = 30
@@ -93,8 +90,13 @@ def displayBars(arr):
 		barHeight = element.val
 		pygame.draw.rect(window, element.color, (pos, 190, barWidth, barHeight))
 		pos += 30
+
+	# update window - this is the only place this happens
 	pygame.display.flip()
-	pygame.time.delay(500)
+	
+	# only delay if called from sorting algorithms
+	if delay == True:
+		pygame.time.delay(500)
 
 
 def runProgam(arr):
@@ -102,10 +104,11 @@ def runProgam(arr):
 	run = True
 	while run:
 
+		window.fill((0,0,0))
 		# pygame.time.delay(100)
 
 		# display before the sort
-		displayBars(arr)
+		displayBars(arr, False)
 
 		bubbleSortButton.checkHover()
 		insertionSortButton.checkHover()
@@ -131,7 +134,7 @@ def runProgam(arr):
 					sort_algo.Algorithm.insertionSort(arr)
 				if shuffleButton.checkClicked() == True:
 					arr = buildArray()
-					displayBars(arr)
+					displayBars(arr, False)
 
 
 
