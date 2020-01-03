@@ -2,6 +2,7 @@
 import random
 import pygame
 import sort_algo
+from button import Button
 
 # pygame window setup
 pygame.init()
@@ -15,6 +16,13 @@ red = (255,0,0)
 white = (255,255,255)
 purple = (255,0,255)
 black = (0,0,0)
+grey = (211,211,211)
+
+# button setup
+bubbleSortButton = Button(window, black, 40, 80, 150, 30)
+selectionSortButton = Button(window, black, 40, 120, 150, 30)
+insertionSortButton = Button(window, black, 300, 80, 150, 30)
+shuffleButton = Button(window, black, 300, 120, 150, 30)
 
 
 # class for each array element
@@ -36,44 +44,40 @@ def buildArray():
 
 	return arr
 
-# text_objects, displayControls, and displayBars all contribute to display
-def text_objects(text, font):
 
-	textSurface = font.render(text, True, white)
-	return textSurface, textSurface.get_rect()
+def displayButtons():
 
+	# window background to black
+	window.fill((0,0,0))
 
-def displayControls():
+	# grey background for menu
+	pygame.draw.rect(window, grey, (0, 0, window_width, 180))
 
 	# display title
 	titleFont = pygame.font.Font('freesansbold.ttf', 40)
-	titleSurface, titleRect = text_objects('Sorting Visualizer', titleFont)
-	titleRect.center = ((window_width/2), 50)
+	titleSurface = titleFont.render('Sorting Visualizer', True, black)
+	titleRect = titleSurface.get_rect()
+	titleRect.center = ((window_width/2), 40)
 	window.blit(titleSurface, titleRect)
 
-	# first control
-	controlFont = pygame.font.Font('freesansbold.ttf', 25)
-	control1Surf, control1Rect = text_objects('1: Bubble Sort', controlFont)
-	control1Rect.center = (100, 100)
-	window.blit(control1Surf, control1Rect)
+	# bubble sort button
+	bubbleSortButton.setText('Bubble Sort')
+	bubbleSortButton.draw()
 
-	# second control
-	controlFont = pygame.font.Font('freesansbold.ttf', 25)
-	control1Surf, control1Rect = text_objects('2: Selection Sort', controlFont)
-	control1Rect.center = (115, 130)
-	window.blit(control1Surf, control1Rect)
 
-	# third control
-	controlFont = pygame.font.Font('freesansbold.ttf', 25)
-	control1Surf, control1Rect = text_objects('3: Insertion Sort', controlFont)
-	control1Rect.center = (111, 160)
-	window.blit(control1Surf, control1Rect)
+	# selection sort button
+	selectionSortButton.setText('Selection Sort')
+	selectionSortButton.draw()
 
-	# fourth control
-	controlFont = pygame.font.Font('freesansbold.ttf', 25)
-	control1Surf, control1Rect = text_objects('s: Shuffle Array', controlFont)
-	control1Rect.center = (350, 100)
-	window.blit(control1Surf, control1Rect)
+	# inserstion sort button
+	insertionSortButton.setText('Insertion Sort')
+	insertionSortButton.draw()
+
+	# shuffle array button
+	shuffleButton.setText('Shuffle Array')
+	shuffleButton.draw()
+
+	pygame.display.flip()
 
 
 def displayBars(arr):
@@ -81,9 +85,8 @@ def displayBars(arr):
 	barWidth = 20
 	pos = 30
 
-	# window background to black
-	window.fill((0,0,0))
-	displayControls()
+	# display the buttons
+	displayButtons()
 
 	# draw array
 	for element in arr:
@@ -99,10 +102,15 @@ def runProgam(arr):
 	run = True
 	while run:
 
-		pygame.time.delay(100)
+		# pygame.time.delay(100)
 
 		# display before the sort
 		displayBars(arr)
+
+		bubbleSortButton.checkHover()
+		insertionSortButton.checkHover()
+		selectionSortButton.checkHover()
+		shuffleButton.checkHover()
 
 		# events
 		for event in pygame.event.get():
@@ -110,21 +118,20 @@ def runProgam(arr):
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				quit()
-			# check keypressed
-			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_s:
-					# rebuild the array and redisplay
+			# check mouse clicked
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				# if bubble sort clicked
+				if bubbleSortButton.checkClicked() == True:
+					sort_algo.Algorithm.bubbleSort(arr)
+				# if selection sort clicked
+				if selectionSortButton.checkClicked() == True:
+					sort_algo.Algorithm.selectionSort(arr)
+					# if insertion sort clicked
+				if insertionSortButton.checkClicked() == True:
+					sort_algo.Algorithm.insertionSort(arr)
+				if shuffleButton.checkClicked() == True:
 					arr = buildArray()
 					displayBars(arr)
-				if event.key == pygame.K_1:
-					# call bubble sort
-					sort_algo.Algorithm.bubbleSort(arr)
-				if event.key == pygame.K_2:
-					# call selection sort
-					sort_algo.Algorithm.selectionSort(arr)
-				if event.key == pygame.K_3:
-					# call insertion sort
-					sort_algo.Algorithm.insertionSort(arr)
 
 
 
