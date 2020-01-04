@@ -24,7 +24,7 @@ bubbleSortButton = Button(window, black, 15, 60, 150, 30)
 selectionSortButton = Button(window, black, 175, 60, 150, 30)
 insertionSortButton = Button(window, black, 335, 60, 150, 30)
 shuffleButton = Button(window, black, 335, 120, 150, 30)
-speedButton = Button(window, black, 40, 120, 90, 30)
+speedButton = Button(window, black, 65, 120, 90, 30)
 
 
 # class for each array element
@@ -85,10 +85,10 @@ def displayButtons(sortSpeed):
 
 	# speed bar
 	if sortSpeed == 5:
-		pygame.draw.rect(window, green, (150, 120, 120, 30))
+		pygame.draw.rect(window, green, (175, 120, 120, 30))
 	else:
-		pygame.draw.rect(window, black, (150, 120, 120, 30))
-		pygame.draw.rect(window, green, (150, 120, 0.2*sortSpeed*120, 30))
+		pygame.draw.rect(window, black, (175, 120, 120, 30))
+		pygame.draw.rect(window, green, (175, 120, 0.2*sortSpeed*120, 30))
 
 def displayBars(arr, delay, sortSpeed):
 
@@ -109,7 +109,16 @@ def displayBars(arr, delay, sortSpeed):
 
 	# only delay if called from sorting algorithms
 	if delay == True:
-		timeDelay = int(1/sortSpeed*1000)
+		if sortSpeed == 1:
+			timeDelay = 1000
+		elif sortSpeed == 2:
+			timeDelay = 500
+		elif sortSpeed == 3:
+			timeDelay = 250
+		elif sortSpeed == 4:
+			timeDelay = 100
+		else:
+			timeDelay = 25
 		pygame.time.delay(timeDelay)
 
 
